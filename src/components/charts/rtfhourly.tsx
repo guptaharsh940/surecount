@@ -10,16 +10,16 @@ import Navbar from '@/components/navbar';
 import ProtectedPage from '@/components/ProtectedPage';
 import { DatePickerWithRange } from '@/components/Daterangepick';
 import { useAppSelector } from '@/redux/store';
-import { fetchyearAndMonth } from '@/api/getrealtimedata';
+import { fetchdodbyhour } from '@/api/getrealtimedata';
 import { Button } from '@/components/ui/button';
-import LineChart2 from '../linechart2';
+import LineChart from '../linechart';
 
 
-const Rtfyearandmonth = () => {
+const Rtfhourly = () => {
 
-    const { data: data, error: error } = useSWR('fetchyearAndMonth', fetchyearAndMonth);
+    const { data: data, error: error } = useSWR('fetchdodbyhour', fetchdodbyhour);
     const [loading, setLoading] = useState(true);
-    const [yearandmonth, setyearandmonth] = useState<{ dates:Array<string>; label:Array<string>; data1:Array<number>; data2:Array<number>;}>({dates:[],label:[],data1:[],data2:[]});
+    const [dodDatabyhour, setdodDatabyhour] = useState<{ dates:Array<string>; label:Array<string>; data1:Array<number>; data2:Array<number>;}>({dates:[],label:[],data1:[],data2:[]});
     useEffect(() => {
         if (data) {
             const timeoutId = setTimeout(() => {
@@ -28,7 +28,7 @@ const Rtfyearandmonth = () => {
                 console.log(data)
                 if (data) {
 
-                    setyearandmonth(data)
+                    setdodDatabyhour(data)
                 }
             }, 10);
             return () => clearTimeout(timeoutId);
@@ -40,11 +40,11 @@ const Rtfyearandmonth = () => {
             setLoading(true);
 
             // Fetch data using the fetchData function
-            const newData = await fetchyearAndMonth();
-            console.log("from main Rtfyearandmonth", newData)
+            const newData = await fetchdodbyhour();
+            console.log("from main Rtfhourly", newData)
             // Update the state with the new data
             if (newData) {
-                setyearandmonth(newData);
+                setdodDatabyhour(newData);
             }
 
             // Set loading to false after data is fetched and updated
@@ -63,10 +63,10 @@ const Rtfyearandmonth = () => {
     return (
 
         <>
-            {!yearandmonth ? (
+            {!dodDatabyhour ? (
                 <div>Loading</div>
             ) : (
-                <LineChart2 inputdata1={yearandmonth.data1} inputdata2={yearandmonth.data2} labels={yearandmonth.label} mainlabels={yearandmonth.dates} title='Footfall - This Year vs Last Year'/>
+                <LineChart inputdata={dodDatabyhour.data1} labels={dodDatabyhour.dates} title='Footfall - Hourly'/>
             )
 
             }
@@ -78,7 +78,7 @@ const Rtfyearandmonth = () => {
 //   const session = await getSession(context);
 
 //   if (!session) {
-//     // Redirect to login Rtfyearandmonth if not authenticated
+//     // Redirect to login Rtfhourly if not authenticated
 //     return {
 //       redirect: {
 //         destination: '/login',
@@ -92,4 +92,4 @@ const Rtfyearandmonth = () => {
 //   };
 // }
 
-export default Rtfyearandmonth;
+export default Rtfhourly;

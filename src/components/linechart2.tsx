@@ -11,8 +11,15 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js';
+import { faDownload } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import xldownload from './xlsxdownloader';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
-
+type Object = {
+    col1:string,
+    col2:number,
+    col3:number
+}
 type PropsForChart = {
     inputdata1: Array<number>;
     inputdata2: Array<number>;
@@ -42,6 +49,23 @@ const LineChart2: React.FC<PropsForChart> = ({ inputdata1, inputdata2, labels, m
             },
         ],
     };
+    const handleDownload = () => {
+        // Replace the label and data with your actual data
+        const label = ['Field', mainlabels[0], mainlabels[1]];
+        const data:Object[] = [];
+        for (let i = 0; i < inputdata1.length; i++) {
+            const newObj:Object = {
+                col1: labels[i],
+                col2:inputdata1[i],
+                col3:inputdata2[i]
+            };
+            data.push(newObj)
+            
+        }
+    
+        // Call the xldownload function
+        xldownload(label, data);
+    };
 
     // Options for the Line chart
     const customOptions = {
@@ -60,9 +84,12 @@ const LineChart2: React.FC<PropsForChart> = ({ inputdata1, inputdata2, labels, m
 
     return (
         <div className='flex h-96 mr-4 mb-4 lg:w-1/2 sm:w-full md:w-4/5'>
-            <Card className='h-full w-full hover:shadow-xl'>
+            <Card className='relative h-full w-full hover:shadow-xl'>
                 <CardHeader className='pb-0'>
                     <CardTitle>{title}</CardTitle>
+                    <button className="absolute right-8 hover:text-blue-500" onClick={handleDownload}>
+                        <FontAwesomeIcon icon={faDownload} />
+                    </button>
                 </CardHeader>
                 <CardContent className='h-4/5'>
                     <Line className='' data={data} options={customOptions} />

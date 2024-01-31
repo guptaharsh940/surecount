@@ -3,6 +3,9 @@ import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import 'chartjs-plugin-datalabels';
 import { useAppSelector } from '@/redux/store'
+import { faDownload } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import xldownload from './xlsxdownloader';
 
 import {
     Card,
@@ -12,15 +15,37 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-type propsforchart={
-    inputdata:Array<number>;
-    labels:Array<string>;
-    title:string
+type propsforchart = {
+    inputdata: Array<number>;
+    labels: Array<string>;
+    title: string
 }
-const Piechart:React.FC<propsforchart> = ({inputdata, labels, title}) => {
+type Object = {
+    col1:string,
+    col2:number
+}
+
+const Piechart: React.FC<propsforchart> = ({ inputdata, labels, title }) => {
     // Data for the Doughnut chart
+    const handleDownload = () => {
+        // Replace the label and data with your actual data
+        const label = ['Field', 'Data'];
+        const data:Object[] = [];
+        for (let i = 0; i < inputdata.length; i++) {
+            const newObj:Object = {
+                col1: labels[i],
+                col2:inputdata[i],
+            };
+            data.push(newObj)
+            
+        }
+    
+        // Call the xldownload function
+        xldownload(label, data);
+    };
     const data = {
         labels: labels,
         datasets: [
@@ -57,24 +82,30 @@ const Piechart:React.FC<propsforchart> = ({inputdata, labels, title}) => {
             datalabels: {
                 color: 'black',
                 display: true,
-                formatter: (value:any, context:any) => {
+                formatter: (value: any, context: any) => {
                     return value; // Display the data value
                 },
-        }},
+            }
+        },
         maintainAspectRatio: false, // Allow chart to not maintain aspect ratio
         responsive: true,
         width: 760, // Set the desired width of the chart
         height: 330, // Set the desired height of the chart
     };
-    const date = useAppSelector((state)=> state.calendarReducer.value)
+    const date = useAppSelector((state) => state.calendarReducer.value)
     return (
         <div className='flex h-96 mr-4 mb-4 lg:w-1/2 sm:w-full md:w-4/5'>
-            <Card className='h-full w-full hover:shadow-xl'>
+            <Card className='relative h-full w-full hover:shadow-xl'>
                 <CardHeader className='pb-0'>
-                    <CardTitle>{title}</CardTitle>
-                <CardDescription>
-                    {`${date.from.getDate()}/${date.from.getMonth()+1}/${date.from.getFullYear()}`} - {date.to? `${date.to.getDate()}/${date.to.getMonth()+1}/${date.to.getFullYear()}` :`${date.from.getDate()}/${date.from.getMonth()+1}/${date.from.getFullYear()}` }
-                </CardDescription>
+                    <CardTitle>{title}
+                    </CardTitle>
+                    <button className="absolute right-8 hover:text-blue-500" onClick={handleDownload}>
+                        <FontAwesomeIcon icon={faDownload} />
+                    </button>
+
+                    <CardDescription>
+                        {`${date.from.getDate()}/${date.from.getMonth() + 1}/${date.from.getFullYear()}`} - {date.to ? `${date.to.getDate()}/${date.to.getMonth() + 1}/${date.to.getFullYear()}` : `${date.from.getDate()}/${date.from.getMonth() + 1}/${date.from.getFullYear()}`}
+                    </CardDescription>
                 </CardHeader>
                 <CardContent className='h-4/5'>
                     <Doughnut className='' data={data} options={customOptions} />

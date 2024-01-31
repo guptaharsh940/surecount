@@ -12,10 +12,10 @@ import { DatePickerWithRange } from '@/components/Daterangepick';
 import { useAppSelector } from '@/redux/store';
 import { fetchyearAndMonth } from '@/api/getrealtimedata';
 import { Button } from '@/components/ui/button';
-import LineChart2 from '../linechart2';
+import LineChart from '../linechart';
 
 
-const Rtfyearandmonth = () => {
+const Rtfyearly = () => {
 
     const { data: data, error: error } = useSWR('fetchyearAndMonth', fetchyearAndMonth);
     const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ const Rtfyearandmonth = () => {
 
             // Fetch data using the fetchData function
             const newData = await fetchyearAndMonth();
-            console.log("from main Rtfyearandmonth", newData)
+            console.log("from main Rtfyearly", newData)
             // Update the state with the new data
             if (newData) {
                 setyearandmonth(newData);
@@ -66,7 +66,7 @@ const Rtfyearandmonth = () => {
             {!yearandmonth ? (
                 <div>Loading</div>
             ) : (
-                <LineChart2 inputdata1={yearandmonth.data1} inputdata2={yearandmonth.data2} labels={yearandmonth.label} mainlabels={yearandmonth.dates} title='Footfall - This Year vs Last Year'/>
+                <LineChart inputdata={yearandmonth.data1} labels={yearandmonth.dates} title='Footfall - This Year'/>
             )
 
             }
@@ -78,7 +78,7 @@ const Rtfyearandmonth = () => {
 //   const session = await getSession(context);
 
 //   if (!session) {
-//     // Redirect to login Rtfyearandmonth if not authenticated
+//     // Redirect to login Rtfyearly if not authenticated
 //     return {
 //       redirect: {
 //         destination: '/login',
@@ -92,4 +92,4 @@ const Rtfyearandmonth = () => {
 //   };
 // }
 
-export default Rtfyearandmonth;
+export default Rtfyearly;

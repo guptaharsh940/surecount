@@ -15,6 +15,8 @@ import Rtfdodbyhour from '@/components/charts/rtfdodbyhour'
 import Rtfthismonthweekbyyoy from '@/components/charts/rtfthismonthweekbyyoy'
 import Rtfthisweekbyyoy from '@/components/charts/rtfgetthisweekbyyou'
 import Rtfyearandmonth from '@/components/charts/rtfyearandmonth'
+import Rtfhourly from '@/components/charts/rtfhourly'
+import Rtfyearly from '@/components/charts/rtfyear'
 const Realtime = () => {
     const { data: session, status } = useSession();
     // const sample = useAppSelector((state)=> state.authReducer.value)
@@ -24,19 +26,25 @@ const Realtime = () => {
             <div className="m-10">
 
                 <div className='flex flex-col md:flex-row  my-5'>
-                    <Rtfmonthbyweek/>
-                    <Rtfweekbyday />
+                <Rtfhourly/>
+                <Rtfdodbyhour/>
+                    
+                    
 
                 </div>
                 <div className='flex flex-col md:flex-row  my-5'>
-                    <Rtfdodbyhour/>
-                    <Rtfthismonthweekbyyoy/>
+                <Rtfweekbyday />
+                <Rtfthisweekbyyoy/>
+                    
                 </div>
                 <div className='flex flex-col md:flex-row  my-5'>
-                    <Rtfthisweekbyyoy/>
-                    <Rtfyearandmonth/>
+                <Rtfmonthbyweek/>
+                <Rtfthismonthweekbyyoy/>
+                    
                 </div>
-                <div>
+                <div className='flex flex-col md:flex-row  my-5'>
+                    <Rtfyearly/>
+                    <Rtfyearandmonth/>
 
                 </div>
 

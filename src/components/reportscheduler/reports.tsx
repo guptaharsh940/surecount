@@ -1,6 +1,6 @@
 'use client';
 // import Piechart from '@/components/piechart';
-import BarChart from '@/components/barchart'
+import Piechart from '@/components/piechart';
 import useSWR from 'swr';
 import { useEffect, useState } from 'react';
 
@@ -10,16 +10,25 @@ import Navbar from '@/components/navbar';
 import ProtectedPage from '@/components/ProtectedPage';
 import { DatePickerWithRange } from '@/components/Daterangepick';
 import { useAppSelector } from '@/redux/store';
-import { fetchyearAndMonth } from '@/api/getrealtimedata';
+import { fetchgetReports } from '@/api/getreportschedulerdata';
 import { Button } from '@/components/ui/button';
-import LineChart2 from '../linechart2';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
 
 
-const Rtfyearandmonth = () => {
 
-    const { data: data, error: error } = useSWR('fetchyearAndMonth', fetchyearAndMonth);
+const Reports = () => {
+
+    const { data: data, error: error } = useSWR('fetchgetReports', fetchgetReports);
+    const date = useAppSelector((state) => state.calendarReducer.value)
     const [loading, setLoading] = useState(true);
-    const [yearandmonth, setyearandmonth] = useState<{ dates:Array<string>; label:Array<string>; data1:Array<number>; data2:Array<number>;}>({dates:[],label:[],data1:[],data2:[]});
+    const [getReport, setgetReport] = useState<string>("");
     useEffect(() => {
         if (data) {
             const timeoutId = setTimeout(() => {
@@ -28,23 +37,23 @@ const Rtfyearandmonth = () => {
                 console.log(data)
                 if (data) {
 
-                    setyearandmonth(data)
+                    setgetReport(data)
                 }
             }, 10);
             return () => clearTimeout(timeoutId);
         }
-    }, [data]);
+    }, [data, date]);
     const fetchDataAndUpdate = async () => {
         try {
             // Set loading to true to show the loading message
             setLoading(true);
 
             // Fetch data using the fetchData function
-            const newData = await fetchyearAndMonth();
-            console.log("from main Rtfyearandmonth", newData)
+            const newData = await fetchgetReports();
+            console.log("from main Reports", newData)
             // Update the state with the new data
             if (newData) {
-                setyearandmonth(newData);
+                setgetReport(newData);
             }
 
             // Set loading to false after data is fetched and updated
@@ -63,13 +72,24 @@ const Rtfyearandmonth = () => {
     return (
 
         <>
-            {!yearandmonth ? (
-                <div>Loading</div>
-            ) : (
-                <LineChart2 inputdata1={yearandmonth.data1} inputdata2={yearandmonth.data2} labels={yearandmonth.label} mainlabels={yearandmonth.dates} title='Footfall - This Year vs Last Year'/>
-            )
+            
+                <div className='flex h-auto mr-4 mb-4 lg:w-full sm:w-full md:w-4/5'>
+                    <Card className='h-full w-full hover:shadow-xl'>
+                        <CardHeader>
+                            <CardTitle>
+                                Reports
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {getReport===""?(<div className='text-red-600'>Nothing to Show</div>):(<div>{getReport}</div>)}
+                        </CardContent>
+                    </Card>
 
-            }
+
+                </div>
+            
+
+            
         </>
 
     )
@@ -78,7 +98,7 @@ const Rtfyearandmonth = () => {
 //   const session = await getSession(context);
 
 //   if (!session) {
-//     // Redirect to login Rtfyearandmonth if not authenticated
+//     // Redirect to login Reports if not authenticated
 //     return {
 //       redirect: {
 //         destination: '/login',
@@ -92,4 +112,4 @@ const Rtfyearandmonth = () => {
 //   };
 // }
 
-export default Rtfyearandmonth;
+export default Reports;

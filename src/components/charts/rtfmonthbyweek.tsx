@@ -19,7 +19,7 @@ const Rtfmonthbyweek = () => {
 
     const { data: data, error: error } = useSWR('fetchMonthbyWeek', fetchMonthbyWeek);
     const [loading, setLoading] = useState(true);
-    const [mainMonthByWeek, setmainMonthByWeek] = useState<{ adjTotal:Array<number>; weeks:Array<string>; }>();
+    const [mainMonthByWeek, setmainMonthByWeek] = useState<{ adjTotal:Array<number>; weeks:Array<string>; }>({adjTotal:[],weeks:[]});
     useEffect(() => {
         if (data) {
             const timeoutId = setTimeout(() => {

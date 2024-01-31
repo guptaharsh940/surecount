@@ -19,7 +19,7 @@ const Fbyregion = () => {
     const { data: data, error: error } = useSWR('fetchStoresbyregion', fetchStoresbyregion);
     const date = useAppSelector((state) => state.calendarReducer.value)
     const [loading, setLoading] = useState(true);
-    const [mainRegionbystoredata, setmainRegionbystoredata] = useState<{ storeCount: Array<number>; regionArray: Array<string>; }>();
+    const [mainRegionbystoredata, setmainRegionbystoredata] = useState<{ storeCount: Array<number>; regionArray: Array<string>; }>({storeCount:[],regionArray:[]});
     useEffect(() => {
         if (data) {
             const timeoutId = setTimeout(() => {
