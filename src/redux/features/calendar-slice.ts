@@ -25,7 +25,7 @@ export const calendar = createSlice({
             return{
                 value:{
                     from: action.payload.from,
-                    to: action.payload.to,
+                    to: action.payload.to? action.payload.to : undefined,
                 }
             }
         },

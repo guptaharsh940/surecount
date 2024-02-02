@@ -25,6 +25,9 @@ export const footfall = createSlice({
         changeFootfall:(state, action: PayloadAction<string>)=>{
             state.value.time = action.payload
         },
+        setCount:(state,action:PayloadAction<number>)=>{
+            state.value.count = action.payload
+        },
         incrementCount:(state)=>{
             state.value.count += 1
         },
@@ -38,5 +41,5 @@ export const footfall = createSlice({
     }
 })
 
-export const { changeFootfall, incrementCount, decrementCount, changeRow } = footfall.actions;
+export const { changeFootfall, incrementCount, decrementCount, changeRow, setCount } = footfall.actions;
 export default footfall.reducer;

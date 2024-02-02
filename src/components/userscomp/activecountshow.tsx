@@ -23,6 +23,7 @@ import {
 import { fetchgetuserdata } from '@/api/getusersdata';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import UsersTable from './userstable';
 
 
 
@@ -31,13 +32,13 @@ const UsersActive = () => {
     const { data: data, error: error } = useSWR('fetchgetuserdata', fetchgetuserdata);
     const date = useAppSelector((state) => state.calendarReducer.value)
     const [loading, setLoading] = useState(true);
-    const [getUsers, setgetUsers] = useState<{ activeCount: number; usersCount: number; }>({ activeCount: 0, usersCount: 0 });
+    const [getUsers, setgetUsers] = useState<{ activeCount: number; usersCount: number; }>();
     useEffect(() => {
         if (data) {
             const timeoutId = setTimeout(() => {
                 fetchDataAndUpdate();
                 setLoading(false);
-                console.log(data)
+                console.log("users-", data)
                 if (data) {
 
                     setgetUsers(data)
@@ -80,17 +81,44 @@ const UsersActive = () => {
                 <Card className='h-full w-full hover:shadow-xl'>
                     <CardHeader>
                         <CardTitle>
-                            UsersActive
+                            Users Active
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className='flex justify-center items-center space-x-8'>
-                        <div className='text-center'>
-                            <FontAwesomeIcon icon={faUsers} className='text-4xl' />
-                            <p className='text-2xl mt-2'>{getUsers.usersCount}</p>
+                    <CardContent >
+                        <div className='flex justify-center items-center space-x-8'>
+
+
+                            <div className='text-center'>
+                                <FontAwesomeIcon icon={faUsers} className='text-2xl text-orange-400' />
+                                {!getUsers ? (
+                                    <p className='text-xl mt-2'>Loading</p>
+                                ) : (
+                                    <div className=''>
+                                        <p className='text-l mt-2'>Total Users</p>
+                                        <p className='text-xl text-orange-400'>{getUsers.usersCount}</p>
+                                    </div>
+                                )
+
+                                }
+
+                            </div>
+                            <div className='text-center'>
+                                <FontAwesomeIcon icon={faUser} className='text-2xl text-green-400' />
+                                {!getUsers ? (
+                                    <p className='text-xl mt-2'>Loading</p>
+                                ) : (
+                                    <div className=''>
+                                        <p className='text-l mt-2'>Active Users</p>
+                                        <p className='text-xl text-green-400'>{getUsers.activeCount}</p>
+                                    </div>
+                                )
+
+                                }
+                            </div>
                         </div>
-                        <div className='text-center'>
-                            <FontAwesomeIcon icon={faUser} className='text-4xl' />
-                            <p className='text-2xl mt-2'>{getUsers.activeCount}</p>
+                        <div>
+
+                            <UsersTable />
                         </div>
                     </CardContent>
                 </Card>

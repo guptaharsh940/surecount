@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
+import { redirect } from "next/navigation";
 
 
 type UserData = {
@@ -63,17 +64,13 @@ export const authOptions: NextAuthOptions = {
     },
     callbacks: {
         async redirect({ url, baseUrl }) {
-            // AllobaseUrl
-            // if (url.startsWith("/")) return `${baseUrl}${url}`
-            // // Allows callback URLs on the same origin
-            // else if (new URL(url).origin === baseUrl) return url
-            // return baseUrl
-            return baseUrl;
+            
+            return baseUrl
         },
         async session({ session, user }) {
             // Include user data in the session
-            console.log("user-",userData);
-            console.log("user2-",user);
+            console.log("user-", userData);
+            console.log("user2-", user);
             session.user = userData;
             console.log(session);
             return session;

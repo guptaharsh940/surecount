@@ -19,11 +19,12 @@ import { Button } from '@/components/ui/button';
 import Fbyregion from '@/components/charts/fbyregion';
 import Dashfbyregion from '@/components/charts/dashfbyregion';
 import DashTablebyWeek from '@/components/charts/dashtable';
+import Filter from '@/components/Filter';
 const page = () => {
-  
 
-  const handlebutton =  () => {
-    
+
+  const handlebutton = () => {
+
   };
   // const {data:session, status} = useSession();
   // console.log(session);
@@ -36,10 +37,11 @@ const page = () => {
       <Navbar />
 
       <div className="m-10">
-        <div className='flex'>
+        <div className='flex space-x-4'>
 
-        <DatePickerWithRange />
-        {/* <Button variant="ghost" onClick = {handlebutton}>
+          <DatePickerWithRange />
+          <Filter />
+          {/* <Button variant="ghost" onClick = {handlebutton}>
                         Refresh
                     </Button> */}
         </div>
@@ -59,13 +61,12 @@ const page = () => {
         </div>
       <Piechart/> */}
         <div className='flex flex-col md:flex-row  my-5'>
-          <Dashfbyregion/>
-          <Fbyregion/>
-          
-        </div>
-          <DashTablebyWeek/>
-        <div>
+          <Dashfbyregion />
+          <Fbyregion />
 
+        </div>
+        <DashTablebyWeek />
+        <div>
         </div>
 
 

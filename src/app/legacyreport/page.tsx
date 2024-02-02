@@ -15,6 +15,15 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 import ProtectedPage from '@/components/ProtectedPage';
 import Navbar from '@/components/navbar';
 import { DatePickerWithRange } from '@/components/Daterangepick';
@@ -96,6 +105,11 @@ const LegacyReport = () => {
         fetchDataAndUpdate()
 
     }
+    const handleCount = (n:number) =>{
+        dispatch(footfall.actions.setCount(n))
+        fetchDataAndUpdate()
+
+    }
     if (error) {
         return <div>Error loading data: {error.message}</div>;
     }
@@ -155,13 +169,50 @@ const LegacyReport = () => {
                         </TableBody>
 
                     </Table>
-                    <Button variant="ghost" onClick = {handleBack}>
-                    {"<"}
-                </Button>
-                <span>{pageCount}</span>
-                    <Button variant="ghost" onClick = {handleNext}>
-                    {">"}
-                </Button>
+                    <Pagination>
+                        <PaginationContent>
+                            <PaginationItem>
+                                <PaginationPrevious onClick={handleBack} />
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink onClick={() => handleCount(pageCount)} isActive>{pageCount}</PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink onClick={() => handleCount(pageCount+1)} isActive>{pageCount+1}</PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink onClick={() => handleCount(pageCount+2)} isActive>{pageCount}</PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink onClick={() => handleCount(pageCount+3)} isActive>{pageCount+3}</PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink onClick={() => handleCount(pageCount+4)} isActive>{pageCount+4}</PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink onClick={() => handleCount(pageCount+5)} isActive>{pageCount+5}</PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink onClick={() => handleCount(pageCount+6)} isActive>{pageCount+6}</PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink onClick={() => handleCount(pageCount+7)} isActive>{pageCount+7}</PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink onClick={() => handleCount(pageCount+8)} isActive>{pageCount+8}</PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink onClick={() => handleCount(pageCount+9)} isActive>{pageCount+9}</PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationEllipsis />
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationNext onClick={handleNext} />
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
+                    
                     </>
                 )
                 
