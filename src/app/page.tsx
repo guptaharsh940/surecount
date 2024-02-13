@@ -20,10 +20,12 @@ import Fbyregion from '@/components/charts/fbyregion';
 import Dashfbyregion from '@/components/charts/dashfbyregion';
 import DashTablebyWeek from '@/components/charts/dashtable';
 import Filter from '@/components/Filter';
+import { redirect } from 'next/navigation';
 const page = () => {
 
 
   const handlebutton = () => {
+
 
   };
   // const {data:session, status} = useSession();
@@ -44,6 +46,13 @@ const page = () => {
           {/* <Button variant="ghost" onClick = {handlebutton}>
                         Refresh
                     </Button> */}
+          <div>
+
+
+            <button className='absolute right-8 bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-300' onClick={handlebutton}>
+              Create Report
+            </button>
+          </div>
         </div>
 
         {/* <div>

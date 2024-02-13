@@ -10,6 +10,7 @@ type AuthState={
     userId: number;
     userType: string;
     isAuthenticated:boolean;
+    user:{isAdmin:boolean};
     username:string;
 }
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
         userId: 0,
         userType: "",
         isAuthenticated:false,
+        user:{isAdmin:false},
         username:"none",
     } as AuthState,
 } as InitialState
@@ -39,6 +41,7 @@ export const auth = createSlice({
                     userId:action.payload.userId,
                     userType:action.payload.userType,
                     isAuthenticated:action.payload.isAuthenticated,
+                    user:action.payload.user,
                     username:action.payload.username
                 }
             }

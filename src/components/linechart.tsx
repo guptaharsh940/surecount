@@ -10,44 +10,44 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import {CategoryScale, LinearScale,PointElement, LineElement} from 'chart.js'; 
+import { CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js';
 import { faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import xldownload from './xlsxdownloader';
-ChartJS.register(CategoryScale, LinearScale,PointElement, LineElement );
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
 type PropsForChart = {
     inputdata: Array<number>;
     labels: Array<string>;
-    title:string;
+    title: string;
 };
 type Object = {
-    col1:string,
-    col2:number
+    col1: string,
+    col2: number
 }
 const LineChart: React.FC<PropsForChart> = ({ inputdata, labels, title }) => {
     // Data for the Line chart
     const handleDownload = () => {
         // Replace the label and data with your actual data
         const label = ['Field', 'Data'];
-        const data:Object[] = [];
+        const data: Object[] = [];
         for (let i = 0; i < inputdata.length; i++) {
-            const newObj:Object = {
+            const newObj: Object = {
                 col1: labels[i],
-                col2:inputdata[i],
+                col2: inputdata[i],
             };
             data.push(newObj)
-            
+
         }
-    
+
         // Call the xldownload function
         xldownload(label, data);
     };
     const data = {
-        labels: labels.length > 0 ? labels : Array.from({ length:  inputdata.length}, (_, i) => i.toString()),
+        labels: labels.length > 0 ? labels : Array.from({ length: inputdata.length }, (_, i) => i.toString()),
         datasets: [
             {
-                
+
                 data: inputdata,
                 borderColor: '#436EB1',
                 fill: false,
@@ -60,14 +60,14 @@ const LineChart: React.FC<PropsForChart> = ({ inputdata, labels, title }) => {
     const customOptions = {
         scales: {
             x: {
-                 // Ensure you provide the correct labels here
+                // Ensure you provide the correct labels here
             },
             y: {
                 // Your y-axis configuration
             },
         },
         plugins: {
-            legend:{display:false}
+            legend: { display: false }
         },
         maintainAspectRatio: false, // Allow chart to not maintain aspect ratio
         responsive: true,

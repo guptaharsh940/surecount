@@ -33,7 +33,9 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 
-import React from "react"
+import React, { useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
 
 const checkboxSchema = z.object({
     label: z.string(),
@@ -69,6 +71,8 @@ const formSchema = z.object({
 
 export function UserForm() {
     const [date, setDate] = React.useState<Date>();
+    const [expand, setexpand] = useState(false);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -87,10 +91,13 @@ export function UserForm() {
 
     return (
         <Card className='h-full w-full hover:shadow-xl'>
-            <CardHeader>
+            <CardHeader className="relative">
                 <CardTitle>Create User</CardTitle>
+                <button className="absolute right-8 hover:text-blue-500" onClick={() => setexpand(!expand)}>
+                    {expand ? (<FontAwesomeIcon icon={faMinus} />) : (<FontAwesomeIcon icon={faPlus} />)}
+                </button>
             </CardHeader>
-            <CardContent>
+            {expand && <CardContent>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <FormField
@@ -162,7 +169,7 @@ export function UserForm() {
                         <Button type="submit">Submit</Button>
                     </form>
                 </Form>
-            </CardContent>
+            </CardContent>}
         </Card>
     );
 }

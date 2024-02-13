@@ -9,6 +9,7 @@ declare module "next-auth" {
             userId: number;
             userType: string;
             isAuthenticated: boolean;
+            user:{isAdmin:boolean};
             username: string;
         }
     }

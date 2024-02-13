@@ -10,6 +10,7 @@ type UserData = {
     userId: number;
     userType: string;
     isAuthenticated: boolean;
+    user: { isAdmin: boolean };
     username: string;
 }
 // const dispatch = useDispatch<AppDispatch>()
@@ -64,7 +65,7 @@ export const authOptions: NextAuthOptions = {
     },
     callbacks: {
         async redirect({ url, baseUrl }) {
-            
+
             return baseUrl
         },
         async session({ session, user }) {
@@ -75,6 +76,7 @@ export const authOptions: NextAuthOptions = {
             console.log(session);
             return session;
         },
+
         // async jwt({ token, user }) {
         //     if (user) token.role = user.role;
         //     return token;
@@ -98,5 +100,6 @@ export const authOptions: NextAuthOptions = {
 
         //     return session
         // }
-    }
+    },
+
 };

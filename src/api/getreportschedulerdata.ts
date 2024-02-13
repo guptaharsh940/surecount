@@ -1,8 +1,15 @@
 import { store } from "@/redux/store";
 
+
+type reportlist = {
+    reportEmails: string;
+    reportName: string;
+    status: boolean;
+}
+
 export const fetchgetReports = async () => {
 
-    const url = `${process.env.NEXT_PUBLIC_APIURL2}/admin/dekiData/getReports/${store.getState().authReducer.value.userId}`;
+    const url = `${process.env.NEXT_PUBLIC_APIURL2}/admin/report/getReports/${store.getState().authReducer.value.userId}`;
 
     try {
         const response = await fetch(url, {
@@ -12,9 +19,8 @@ export const fetchgetReports = async () => {
                 accept: 'application/json'
             },
         });
-        const responseData: { Data: string } = await response.json();
-        console.log("from backend-", responseData);
-        const data:string = responseData.Data
+        const responseData:Array<reportlist> = await response.json();
+        const data: Array<reportlist> = responseData
         console.log("returned")
         return data;
 

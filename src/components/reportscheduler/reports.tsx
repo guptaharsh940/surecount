@@ -9,6 +9,16 @@ import { json } from 'node:stream/consumers';
 import Navbar from '@/components/navbar';
 import ProtectedPage from '@/components/ProtectedPage';
 import { DatePickerWithRange } from '@/components/Daterangepick';
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
 import { useAppSelector } from '@/redux/store';
 import { fetchgetReports } from '@/api/getreportschedulerdata';
 import { Button } from '@/components/ui/button';
@@ -20,15 +30,21 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowsRotate, faDownload, faMinus, faPencil, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-
+type reportlist = {
+    reportEmails: string;
+    reportName: string;
+    status: boolean;
+}
 
 const Reports = () => {
 
-    const { data: data, error: error } = useSWR('fetchgetReports', fetchgetReports);
+    const { data: data, error: error } = useSWR<Array<reportlist>>('fetchgetReports', fetchgetReports);
     const date = useAppSelector((state) => state.calendarReducer.value)
     const [loading, setLoading] = useState(true);
-    const [getReport, setgetReport] = useState<string>("");
+    const [getReport, setgetReport] = useState<Array<reportlist>>([]);
     useEffect(() => {
         if (data) {
             const timeoutId = setTimeout(() => {
@@ -72,24 +88,46 @@ const Reports = () => {
     return (
 
         <>
-            
-                <div className='flex h-auto mr-4 mb-4 lg:w-full sm:w-full md:w-4/5'>
-                    <Card className='h-full w-full hover:shadow-xl'>
-                        <CardHeader>
-                            <CardTitle>
-                                Reports
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            {getReport===""?(<div className='text-red-600'>Nothing to Show</div>):(<div>{getReport}</div>)}
-                        </CardContent>
-                    </Card>
+
+            <div className='flex h-auto mr-4 mb-4 lg:w-full sm:w-full md:w-4/5'>
+                <Card className='h-full w-full hover:shadow-xl'>
+                    <CardHeader>
+                        <CardTitle>
+                            Reports
+                        </CardTitle>
+
+                    </CardHeader>
+                    <CardContent>
+                        {getReport.length == 0 ? (<div className='text-red-600'>Nothing to Show</div>) : (
+                            <div><Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Report Name</TableHead>
+                                        <TableHead>Email</TableHead>
+                                        <TableHead>Status</TableHead>
+                                        <TableHead>Edit/Delete</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {getReport?.map((element) => (
+                                        <TableRow key={element.reportName}>
+                                            <TableCell className="font-medium">{element.reportName}</TableCell>
+                                            {element.reportEmails && <TableCell>{element.reportEmails}</TableCell>}
+                                            {element.status && <TableCell>{element.status}</TableCell>}
+                                            <TableCell className='space-x-1'><FontAwesomeIcon className=' text-green-500' icon={faPencil} /><FontAwesomeIcon className=' text-red-600' icon={faTrash} /> <FontAwesomeIcon className=' text-blue-500' icon={faDownload} /></TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+
+                            </Table></div>)}
+                    </CardContent>
+                </Card>
 
 
-                </div>
-            
+            </div>
 
-            
+
+
         </>
 
     )

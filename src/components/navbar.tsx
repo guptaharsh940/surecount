@@ -4,7 +4,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
-import {Sidenavbar} from '@/components/Sidenavbar'
+import { Sidenavbar } from '@/components/Sidenavbar'
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -14,7 +14,7 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     NavigationMenuViewport,
-} from "@/components/ui/navigation-menu" 
+} from "@/components/ui/navigation-menu"
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
 import Link from 'next/link'
 import logo from "../../public/logo-surecount.png";
@@ -28,7 +28,7 @@ import { Button } from "@/components/ui/button";
 // }
 const Navbar = () => {
 
-    const {data:session, status} = useSession();
+    const { data: session, status } = useSession();
     // console.log("fromhere",session)
 
     const pathname = usePathname()
@@ -36,19 +36,19 @@ const Navbar = () => {
     return (
         <div className='flex shadow-xl min-h-16 relative'>
             <div className='h-auto w-12 flex items-center justify-center lg:hidden mx-3'>
-                <Sidenavbar/>
+                <Sidenavbar session={session} />
             </div>
             <div className='self-center hidden  lg:flex '>
-            <Image src={logo} alt="Surecount" className="h-12 w-auto self-center px-2 "></Image>
+                <Image src={logo} alt="Surecount" className="h-12 w-auto self-center px-2 "></Image>
             </div>
             <div className='self-center absolute left-1/2 transform -translate-x-1/2 lg:hidden'>
-            <Image src={logo} alt="Surecount" className="h-12 w-auto self-center px-2 "></Image>
+                <Image src={logo} alt="Surecount" className="h-12 w-auto self-center px-2 "></Image>
             </div>
 
             <nav className='hidden sm:hidden md:hidden lg:flex space-x-10 place-self-center mx-auto pr-24 '>
                 <Link href="/" className={`flex h-7 items-center justify-center rounded-full px-4 text-center text-sm transition-colors hover:text-primary ${pathname == "/" ? 'bg-muted font-medium text-primary' : 'text-muted-foreground'}`}>Dashboard</Link>
                 <Link href="/realtime" className={`flex h-7 items-center justify-center rounded-full px-4 text-center text-sm transition-colors hover:text-primary ${pathname == "/realtime" ? 'bg-muted font-medium text-primary' : 'text-muted-foreground'}`}>Real Time</Link>
-                <Link href="/user" className={`flex h-7 items-center justify-center rounded-full px-4 text-center text-sm transition-colors hover:text-primary ${pathname == "/user" ? 'bg-muted font-medium text-primary' : 'text-muted-foreground'}`}>User</Link>
+                {session?.user?.userType == "Admin" && <Link href="/user" className={`flex h-7 items-center justify-center rounded-full px-4 text-center text-sm transition-colors hover:text-primary ${pathname == "/user" ? 'bg-muted font-medium text-primary' : 'text-muted-foreground'}`}>User</Link>}
                 <Link href="/reportscheduler" className={`flex h-7 items-center justify-center rounded-full px-4 text-center text-sm transition-colors hover:text-primary ${pathname == "/reportscheduler" ? 'bg-muted font-medium text-primary' : 'text-muted-foreground'}`}>Report Scheduler</Link>
                 <Link href="/legacyreport" className={`flex h-7 items-center justify-center rounded-full px-4 text-center text-sm transition-colors hover:text-primary ${pathname == "/legacyreport" ? 'bg-muted font-medium text-primary' : 'text-muted-foreground'}`}>Legacy Report</Link>
                 {/* <Link href="/NextPage" className='flex h-7 items-center justify-center rounded-full px-4 text-center text-sm transition-colors hover:text-primary text-muted-foreground'>Next</Link> */}
@@ -69,10 +69,10 @@ const Navbar = () => {
                                         }}>
                                             <div className='space-x-1 '>
 
-                                            <FontAwesomeIcon icon={faRightFromBracket} className="text-red-500"/>
-                                            <span className="text-red-500">Logout</span>
+                                                <FontAwesomeIcon icon={faRightFromBracket} className="text-red-500" />
+                                                <span className="text-red-500">Logout</span>
                                             </div>
-                                            </Button>
+                                        </Button>
                                     </div>
                                 </NavigationMenuLink>
                             </NavigationMenuContent>

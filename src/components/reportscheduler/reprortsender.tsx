@@ -12,6 +12,9 @@ import {
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { Calendar as CalendarIcon } from "lucide-react"
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowsRotate, faDownload, faMinus, faPencil, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -33,7 +36,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 
-import React from "react"
+import React, { useState } from "react"
 
 const checkboxSchema = z.object({
     label: z.string(),
@@ -57,6 +60,8 @@ const formSchema = z.object({
 })
 
 export function ReportForm() {
+    const [expand, setexpand] = useState(false);
+
     const [date, setDate] = React.useState<Date>()
     // ...
     const form = useForm<z.infer<typeof formSchema>>({
@@ -77,12 +82,15 @@ export function ReportForm() {
 
     return (
         <Card className='h-full w-full hover:shadow-xl'>
-            <CardHeader>
+            <CardHeader className="relative">
                 <CardTitle>
                     Create Report
                 </CardTitle>
+                <button className="absolute right-8 hover:text-blue-500" onClick={() => setexpand(!expand)}>
+                    {expand ? (<FontAwesomeIcon icon={faMinus} />) : (<FontAwesomeIcon icon={faPlus} />)}
+                </button>
             </CardHeader>
-            <CardContent>
+            {expand && <CardContent>
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -189,29 +197,29 @@ export function ReportForm() {
                                     <FormControl>
                                         <div>
 
-                                        
-                                        <Popover>
-                                            <PopoverTrigger asChild>
-                                                <Button
-                                                    variant={"outline"}
-                                                    className={cn(
-                                                        "w-[280px] justify-start text-left font-normal",
-                                                        !date && "text-muted-foreground"
-                                                    )}
-                                                >
-                                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                                    {date ? format(date, "PPP") : <span>Pick a date</span>}
-                                                </Button>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="w-auto p-0">
-                                                <Calendar
-                                                    mode="single"
-                                                    selected={date}
-                                                    onSelect={setDate}
-                                                    initialFocus
-                                                />
-                                            </PopoverContent>
-                                        </Popover>
+
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <Button
+                                                        variant={"outline"}
+                                                        className={cn(
+                                                            "w-[280px] justify-start text-left font-normal",
+                                                            !date && "text-muted-foreground"
+                                                        )}
+                                                    >
+                                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                                        {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0">
+                                                    <Calendar
+                                                        mode="single"
+                                                        selected={date}
+                                                        onSelect={setDate}
+                                                        initialFocus
+                                                    />
+                                                </PopoverContent>
+                                            </Popover>
                                         </div>
                                     </FormControl>
                                     <FormMessage />
@@ -221,7 +229,7 @@ export function ReportForm() {
                         <Button type="submit">Submit</Button>
                     </form>
                 </Form>
-            </CardContent>
+            </CardContent>}
         </Card>
     )
 }
