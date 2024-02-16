@@ -35,7 +35,9 @@ import { Input } from "@/components/ui/input"
 
 import React, { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { faL, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { Filterforform } from "../Filter"
+import { saveUserData } from "@/api/getusersdata"
 
 const checkboxSchema = z.object({
     label: z.string(),
@@ -55,23 +57,34 @@ const formSchema = z.object({
     email: z.string().email({
         message: "Invalid email address.",
     }),
-    password: z.string().min(6, {
-        message: "Password must be at least 6 characters.",
+    password: z.string().min(3, {
+        message: "Password must be at least 3 characters.",
     }),
-    confirmPassword: z.string().min(6, {
-        message: "Password must be at least 6 characters.",
+    confirmPassword: z.string().min(3, {
+        message: "Password must be at least 3 characters.",
     }),
-    widget: z.array(checkboxSchema).refine(data => data.some(widget => widget.checked), {
-        message: "At least one must be selected",
-    }),
-    date: z.date().min(new Date(), {
-        message: "Select a future date",
-    }),
-});
+}).refine(
+    (data) => {
+        return data.password === data.confirmPassword;
+    },
+    {
+        message: "Passwords do not match",
+        path: ["confirmPassword"]
+    }
+);
+
+export type userperm = {
+    addUser: boolean,
+    deleteUser: boolean,
+    addReport: boolean,
+    deleteReport: boolean
+}
 
 export function UserForm() {
     const [date, setDate] = React.useState<Date>();
     const [expand, setexpand] = useState(false);
+    const [applicationId, setapplicationId] = useState(1);
+    const [userpermission, setuserpermission] = useState<userperm>({ addUser: false, deleteUser: false, addReport: true, deleteReport: true })
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -81,11 +94,11 @@ export function UserForm() {
             email: "",
             password: "",
             confirmPassword: "",
-            widget: [],
         },
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
+        saveUserData(values,userpermission,applicationId)
         console.log(values);
     }
 
@@ -97,19 +110,30 @@ export function UserForm() {
                     {expand ? (<FontAwesomeIcon icon={faMinus} />) : (<FontAwesomeIcon icon={faPlus} />)}
                 </button>
             </CardHeader>
-            {expand && <CardContent>
+            {expand && <CardContent className="w-full">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className=" w-full">
+
+
+
                         <FormField
                             control={form.control}
                             name="username"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>User Name</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="User Name" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
+                                    {/* <div className="w-full"> */}
+                                    <div className="w-full flex ">
+                                        <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                            <FormLabel className="p-3">User Name</FormLabel>
+                                        </div>
+                                        <FormControl>
+                                            <div className="border-b flex-1 flex">
+                                                <Input className="m-3 w-full" placeholder="User Name" {...field} />
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </div>
+                                    {/* </div> */}
                                 </FormItem>
                             )}
                         />
@@ -118,11 +142,19 @@ export function UserForm() {
                             name="profileName"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Profile Name</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Profile Name" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
+                                    {/* <div className="w-full"> */}
+                                    <div className="w-full flex ">
+                                        <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                            <FormLabel className="p-3">Profile Name</FormLabel>
+                                        </div>
+                                        <FormControl>
+                                            <div className="border-b flex-1 flex">
+                                                <Input className="m-3 w-full" placeholder="Profile Name" {...field} />
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </div>
+                                    {/* </div> */}
                                 </FormItem>
                             )}
                         />
@@ -131,11 +163,19 @@ export function UserForm() {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Email Address" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
+                                    {/* <div className="w-full"> */}
+                                    <div className="w-full flex ">
+                                        <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                            <FormLabel className="p-3">Email</FormLabel>
+                                        </div>
+                                        <FormControl>
+                                            <div className="border-b flex-1 flex">
+                                                <Input className="m-3 w-full" placeholder="Email Address" {...field} />
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </div>
+                                    {/* </div> */}
                                 </FormItem>
                             )}
                         />
@@ -144,11 +184,19 @@ export function UserForm() {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Input type="password" placeholder="Password" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
+                                    {/* <div className="w-full"> */}
+                                    <div className="w-full flex ">
+                                        <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                            <FormLabel className="p-3">Password</FormLabel>
+                                        </div>
+                                        <FormControl>
+                                            <div className="border-b flex-1 flex">
+                                                <Input className="m-3 w-full" type="password" placeholder="Password" {...field} />
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </div>
+                                    {/* </div> */}
                                 </FormItem>
                             )}
                         />
@@ -157,14 +205,145 @@ export function UserForm() {
                             name="confirmPassword"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Confirm Password</FormLabel>
-                                    <FormControl>
-                                        <Input type="password" placeholder="Confirm Password" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
+                                    {/* <div className="w-full"> */}
+                                    <div className="w-full flex ">
+                                        <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                            <FormLabel className="p-3">Confirm Password</FormLabel>
+                                        </div>
+                                        <FormControl>
+                                            <div className="border-b flex-1 flex">
+                                                <Input className="m-3 w-full" type="password" placeholder="Confirm Password" {...field} />
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </div>
+                                    {/* </div> */}
                                 </FormItem>
                             )}
                         />
+                        <div className="w-full flex ">
+                            <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                <p className="p-4">Add Levels to User</p>
+                            </div>
+                            <div className="p-5 space-y-2 border-b flex-1 flex">
+                                            
+                                                <Filterforform />
+                                            </div>
+                                        </div>
+                        <div className="w-full flex ">
+                            <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                <p className="p-4">Select Template</p>
+                            </div>
+                            <div className="p-5 space-y-2 border-b flex-1 flex flex-col">
+                                <div className="flex">
+
+                                    <Checkbox id={"1"} checked={applicationId === 1} onCheckedChange={(e) => (setapplicationId(e ? 1 : 1))} />
+                                    <label
+                                        htmlFor={"1"}
+                                        className="pl-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Admin Template
+                                    </label>
+                                </div>
+                                <div className="flex">
+                                    <Checkbox id={"2"} checked={applicationId === 2} onCheckedChange={(e) => (setapplicationId(e ? 2 : 2))} />
+                                    <label
+                                        htmlFor={"2"}
+                                        className="pl-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        GM Template
+                                    </label>
+                                </div>
+                                <div className="flex">
+                                    <Checkbox id={"3"} checked={applicationId === 3} onCheckedChange={(e) => (setapplicationId(e ? 3 : 3))} />
+                                    <label
+                                        htmlFor={"3"}
+                                        className="pl-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Store Template
+                                    </label>
+                                </div>
+                                <div className="flex">
+                                    <Checkbox id={"4"} checked={applicationId === 4} onCheckedChange={(e) => (setapplicationId(e ? 4 : 4))} />
+                                    <label
+                                        htmlFor={"4"}
+                                        className="pl-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Management Template (Mobile App Only)
+                                    </label>
+                                </div>
+                                <div className="flex">
+                                    <Checkbox id={"5"} checked={applicationId === 5} onCheckedChange={(e) => (setapplicationId(e ? 5 : 5))} />
+                                    <label
+                                        htmlFor={"5"}
+                                        className="pl-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        RM Template
+                                    </label>
+                                </div>
+                                <div className="flex">
+                                    <Checkbox id={"6"} checked={applicationId === 6} onCheckedChange={(e) => (setapplicationId(e ? 6 : 6))} />
+                                    <label
+                                        htmlFor={"6"}
+                                        className="pl-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        DM Template
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="w-full flex ">
+                            <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                <p className="p-4">User Access</p>
+                            </div>
+                            <div className="p-5 space-y-2 border-b flex-1 flex">
+                                <div className="flex-1 flex">
+
+                                    <Checkbox id={"group"} checked={false} />
+                                    <label
+                                        htmlFor={"group"}
+                                        className="pl-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Group User
+                                    </label>
+                                </div>
+                                <div className="flex-1 flex">
+                                    <Checkbox id={"normal"} checked={true} />
+                                    <label
+                                        htmlFor={"normal"}
+                                        className="pl-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Normal User
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="w-full flex ">
+                            <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                <p className="p-4">Permission</p>
+                            </div>
+                            <div className="p-5 space-y-2 border-b flex-1 flex">
+                                <div className="flex-1 flex">
+
+                                    <Checkbox id={"addrep"} checked={userpermission.addReport} onCheckedChange={(e) => (setuserpermission({ ...userpermission, addReport :e?true:false}))}/>
+                                    <label
+                                        htmlFor={"addrep"}
+                                        className="pl-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Add Report
+                                    </label>
+                                </div>
+                                <div className="flex-1 flex">
+                                    <Checkbox id={"delrep"} checked={userpermission.deleteReport} onCheckedChange={(e) => (setuserpermission({ ...userpermission, deleteReport :e?true:false}))} />
+                                    <label
+                                        htmlFor={"delrep"}
+                                        className="pl-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Delete Report
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         {/* Remaining code for widgets and date */}
                         <Button type="submit">Submit</Button>
                     </form>

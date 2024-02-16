@@ -8,12 +8,20 @@ import { useEffect } from 'react';
 import { useAppSelector } from '@/redux/store';
 
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
-    const data2 = useAppSelector((state) => state.filterReducer.client);
+    const data2 = useAppSelector((state) => state.filterReducer.userClients);
     const fetchData = async () => {
         try {
             const data = await fetchfilterdata();
-            if (data2.length == 0) {
-                dispatch(filter.actions.setfilter(data));
+            if (data2.length==0) {
+                data.map((client)=>{
+                    client.region.map((region)=>{
+                        region.level3.map((level3)=>{
+                            level3.level2?.map((level2)=>{
+                                level2.store.map((store)=>(filter.actions.addstore({clientId:client.clientId,regionId:region.regionId ,level3Id:level3.level3Id, level2Id:level2.level2Id, installId:store.storeId})))
+                            })
+                        })
+                    })
+                })
             }
             console.log('Data received in component:', data);
             // Handle the data here
@@ -34,7 +42,7 @@ const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
         return null;
     }
     dispatch(auth.actions.logIn(session.user))
-    fetchData()
+    // fetchData()
 
     return <div>{children}</div>;
 };
