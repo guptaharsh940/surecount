@@ -37,6 +37,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 
 import React, { useState } from "react"
+import { Filterforform } from "../Filter"
 
 const checkboxSchema = z.object({
     label: z.string(),
@@ -45,8 +46,8 @@ const checkboxSchema = z.object({
 });
 
 const formSchema = z.object({
-    username: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
+    reportName: z.string().min(2, {
+        message: "Report Name must be at least 2 characters.",
     }),
     email: z.string().min(2, {
         message: "Email must be at least 2 characters.",
@@ -67,7 +68,7 @@ export function ReportForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            username: "",
+            reportName: "",
             email: "",
             widget: [],
         },
@@ -96,14 +97,22 @@ export function ReportForm() {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <FormField
                             control={form.control}
-                            name="username"
+                            name="reportName"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Report Name</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Report Name" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
+                                    {/* <div className="w-full"> */}
+                                    <div className="w-full flex ">
+                                        <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                            <FormLabel className="p-3">User Name</FormLabel>
+                                        </div>
+                                        <FormControl>
+                                            <div className="border-b flex-1 flex">
+                                                <Input className="m-3 w-full" placeholder="User Name" {...field} />
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </div>
+                                    {/* </div> */}
                                 </FormItem>
                             )}
                         />
@@ -112,79 +121,102 @@ export function ReportForm() {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Email Address" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
+                                    {/* <div className="w-full"> */}
+                                    <div className="w-full flex ">
+                                        <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                            <FormLabel className="p-3">Email</FormLabel>
+                                        </div>
+                                        <FormControl>
+                                            <div className="border-b flex-1 flex">
+                                                <Input className="m-3 w-full" placeholder="Email Address" {...field} />
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </div>
+                                    {/* </div> */}
                                 </FormItem>
                             )}
                         />
+                        <div className="w-full flex ">
+                            <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+                                <p className="p-4">Add Levels to User</p>
+                            </div>
+                            <div className="p-5 space-y-2 border-b flex-1 flex">
 
+                                <Filterforform />
+                            </div>
+                        </div>
                         <FormField
                             control={form.control}
                             name="widget"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Add Widgets To Report</FormLabel>
-                                    <FormControl>
-                                        <div className="flex items-center space-x-2">
-                                            <Checkbox
-                                                id="daily"
-                                                {...field}
-                                                value="daily"
-                                            />
-                                            <label
-                                                htmlFor="Weekly"
-                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                            >
-                                                Daily
-                                            </label>
-                                            <Checkbox id="Weekly" />
-                                            <label
-                                                htmlFor="Weekly"
-                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                            >
-                                                Weekly
-                                            </label>
-                                            <Checkbox id="Monthly" />
-                                            <label
-                                                htmlFor="Monthly"
-                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                            >
-                                                Monthly
-                                            </label>
-                                            <Checkbox id="Yearly" />
-                                            <label
-                                                htmlFor="Yearly"
-                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                            >
-                                                Yearly
-                                            </label>
-                                            <Checkbox id="Footfall By Region" />
-                                            <label
-                                                htmlFor="Footfall By Region"
-                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                            >
-                                                Footfall By Region
-                                            </label>
-                                            <Checkbox id="No of Stores By Region" />
-                                            <label
-                                                htmlFor="No of Stores By Region"
-                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                            >
-                                                No of Stores By Region
-                                            </label>
-                                            <Checkbox id="Footfall - Region by Day of Week" />
-                                            <label
-                                                htmlFor="Footfall - Region by Day of Week"
-                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                            >
-                                                Footfall - Region by Day of Week
-                                            </label>
+                                    <div className="w-full flex ">
+                                        <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
+
+                                            <FormLabel className="p-3">Add Widgets To Report</FormLabel>
                                         </div>
-                                    </FormControl>
-                                    <FormMessage />
+                                        <FormControl>
+                                            <div className="flex items-center space-x-2">
+                                                <div className="border-b flex-1 flex">
+                                                    <Checkbox
+                                                        id="daily"
+                                                        {...field}
+                                                        value="daily"
+                                                    />
+                                                    <label
+                                                        htmlFor="Weekly"
+                                                        className="m-3 w-full text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                    >
+                                                        Daily
+                                                    </label>
+                                                </div>
+                                                <Checkbox id="Weekly" />
+                                                <label
+                                                    htmlFor="Weekly"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    Weekly
+                                                </label>
+                                                <Checkbox id="Monthly" />
+                                                <label
+                                                    htmlFor="Monthly"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    Monthly
+                                                </label>
+                                                <Checkbox id="Yearly" />
+                                                <label
+                                                    htmlFor="Yearly"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    Yearly
+                                                </label>
+                                                <Checkbox id="Footfall By Region" />
+                                                <label
+                                                    htmlFor="Footfall By Region"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    Footfall By Region
+                                                </label>
+                                                <Checkbox id="No of Stores By Region" />
+                                                <label
+                                                    htmlFor="No of Stores By Region"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    No of Stores By Region
+                                                </label>
+                                                <Checkbox id="Footfall - Region by Day of Week" />
+                                                <label
+                                                    htmlFor="Footfall - Region by Day of Week"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    Footfall - Region by Day of Week
+                                                </label>
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </div>
                                 </FormItem>
                             )}
                         />

@@ -160,17 +160,17 @@ export function UserForm() {
                         />
                         <FormField
                             control={form.control}
-                            name="email"
+                            name="profileName"
                             render={({ field }) => (
                                 <FormItem>
                                     {/* <div className="w-full"> */}
                                     <div className="w-full flex ">
                                         <div className="border-r border-b flex-none w-1/4 flex items-center justify-end">
-                                            <FormLabel className="p-3">Email</FormLabel>
+                                            <FormLabel className="p-3">Profile Name</FormLabel>
                                         </div>
                                         <FormControl>
                                             <div className="border-b flex-1 flex">
-                                                <Input className="m-3 w-full" placeholder="Email Address" {...field} />
+                                                <Input className="m-3 w-full" placeholder="Profile Name" {...field} />
                                             </div>
                                         </FormControl>
                                         <FormMessage />
